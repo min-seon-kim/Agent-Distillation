@@ -1,0 +1,10 @@
+{
+  "log_file": "logs/qa_results/vllm/Qwen_Qwen2.5-1.5B-Instruct/hotpotqa_500_20250422_test/Qwen2.5-1.5B-Instruct_temp=0.0_seed=42_type=reasoning.jsonl",
+  "total_questions": 500,
+  "correct_answers": 92,
+  "accuracy": 0.184,
+  "costs": {
+    "total_cost": 0.4602979999999999,
+    "average_cost_per_question": 0.0009205959999999998
+  }
+}

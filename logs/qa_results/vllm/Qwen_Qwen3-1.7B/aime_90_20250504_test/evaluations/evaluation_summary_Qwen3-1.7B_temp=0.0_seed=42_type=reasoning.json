@@ -1,0 +1,10 @@
+{
+  "log_file": "logs/qa_results/vllm/Qwen_Qwen3-1.7B/aime_90_20250504_test/Qwen3-1.7B_temp=0.0_seed=42_type=reasoning.jsonl",
+  "total_questions": 90,
+  "correct_answers": 7,
+  "accuracy": 0.07777777777777778,
+  "costs": {
+    "total_cost": 0.0,
+    "average_cost_per_question": 0.0
+  }
+}

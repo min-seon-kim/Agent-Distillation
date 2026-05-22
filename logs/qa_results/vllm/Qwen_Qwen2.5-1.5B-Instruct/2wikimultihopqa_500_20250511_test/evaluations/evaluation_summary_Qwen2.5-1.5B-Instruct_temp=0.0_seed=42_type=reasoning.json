@@ -1,0 +1,10 @@
+{
+  "log_file": "logs/qa_results/vllm/Qwen_Qwen2.5-1.5B-Instruct/2wikimultihopqa_500_20250511_test/Qwen2.5-1.5B-Instruct_temp=0.0_seed=42_type=reasoning.jsonl",
+  "total_questions": 500,
+  "correct_answers": 95,
+  "accuracy": 0.19,
+  "costs": {
+    "total_cost": 0.43241000000000007,
+    "average_cost_per_question": 0.0008648200000000002
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "log_file": "logs/qa_results/vllm/Qwen_Qwen3-1.7B/bamboogle_125_20250507_test/Qwen3-1.7B_temp=0.0_seed=42_type=reasoning.jsonl",
+  "total_questions": 125,
+  "correct_answers": 19,
+  "accuracy": 0.152,
+  "costs": {
+    "total_cost": 0.09309200000000004,
+    "average_cost_per_question": 0.0007447360000000003
+  }
+}

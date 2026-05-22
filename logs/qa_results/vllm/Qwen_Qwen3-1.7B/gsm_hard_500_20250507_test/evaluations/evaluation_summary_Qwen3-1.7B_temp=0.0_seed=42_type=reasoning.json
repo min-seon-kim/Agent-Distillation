@@ -1,0 +1,10 @@
+{
+  "log_file": "logs/qa_results/vllm/Qwen_Qwen3-1.7B/gsm_hard_500_20250507_test/Qwen3-1.7B_temp=0.0_seed=42_type=reasoning.jsonl",
+  "total_questions": 500,
+  "correct_answers": 292,
+  "accuracy": 0.584,
+  "costs": {
+    "total_cost": 0.0,
+    "average_cost_per_question": 0.0
+  }
+}

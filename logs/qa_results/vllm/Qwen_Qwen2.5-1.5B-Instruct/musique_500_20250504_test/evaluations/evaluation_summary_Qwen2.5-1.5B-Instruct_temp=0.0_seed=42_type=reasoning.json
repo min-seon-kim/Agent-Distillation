@@ -1,0 +1,10 @@
+{
+  "log_file": "logs/qa_results/vllm/Qwen_Qwen2.5-1.5B-Instruct/musique_500_20250504_test/Qwen2.5-1.5B-Instruct_temp=0.0_seed=42_type=reasoning.jsonl",
+  "total_questions": 500,
+  "correct_answers": 18,
+  "accuracy": 0.036,
+  "costs": {
+    "total_cost": 0.5142310000000001,
+    "average_cost_per_question": 0.0010284620000000002
+  }
+}
