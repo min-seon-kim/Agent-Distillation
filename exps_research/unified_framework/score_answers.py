@@ -90,9 +90,13 @@ def setup_scoring_model() -> AnthropicJudgeModel:
 
 def parse_judge_json(content: str) -> Dict[str, Any]:
     """Parse the judge JSON even if the model wraps it in Markdown fences."""
+    import re
     content = content.strip()
     if content.startswith("```"):
         content = content.strip("`").removeprefix("json").strip()
+    # JSON 문자열 내 raw control character(0x00-0x1f, 0x7f)는 invalid:
+    # Claude judge 응답의 explanation 필드에 개행 등이 포함될 때 파싱 실패 방지
+    content = re.sub(r'[\x00-\x1f\x7f-\x9f]', ' ', content)
     try:
         return json.loads(content)
     except json.JSONDecodeError:

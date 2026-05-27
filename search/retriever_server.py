@@ -216,6 +216,10 @@ class BM25Retriever(BaseRetriever):
 class DenseRetriever(BaseRetriever):
     def __init__(self, config):
         super().__init__(config)
+        # corpus를 GPU 초기화보다 먼저 로드: CUDA init 후 fork()하면
+        # 자식 프로세스가 좀비가 되어 uvicorn asyncio loop가 즉시 shutdown됨
+        self.corpus = load_corpus(self.corpus_path)
+
         self.index = faiss.read_index(self.index_path)
         if config.faiss_gpu:
             co = faiss.GpuMultipleClonerOptions()
@@ -223,7 +227,6 @@ class DenseRetriever(BaseRetriever):
             co.shard = True
             self.index = faiss.index_cpu_to_all_gpus(self.index, co=co)
 
-        self.corpus = load_corpus(self.corpus_path)
         self.encoder = Encoder(
             model_name = self.retrieval_method,
             model_path = config.retrieval_model_path,

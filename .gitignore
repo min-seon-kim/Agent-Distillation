@@ -1,3 +1,5 @@
 .venv
 *.log
 keys/
+logs/
+search/database

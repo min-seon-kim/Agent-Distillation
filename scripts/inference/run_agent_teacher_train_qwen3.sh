@@ -10,6 +10,16 @@
 #   bash scripts/training/train_agent_qwen3.sh qwen3
 # ===========================================================
 
+# ---- Activate project venv (contains vllm) ----------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VENV_ACTIVATE="$SCRIPT_DIR/../../keys/.venv/bin/activate"
+if [ -f "$VENV_ACTIVATE" ]; then
+  source "$VENV_ACTIVATE"
+  echo "✅ Activated venv: $VENV_ACTIVATE"
+else
+  echo "⚠️  venv not found at $VENV_ACTIVATE, proceeding with current PATH"
+fi
+
 # ===================== User Setting ===================== #
 BASE_MODEL="Qwen/Qwen3-32B"
 EXP_TYPE="agent"
@@ -70,6 +80,14 @@ if [ "$STALE" -gt 0 ]; then
   rm -f /dev/shm/nccl-*
 fi
 
+# ---- Retriever server (start first so it's ready by the time vLLM loads) ----
+echo "🔍 Launching retriever server..."
+CUDA_VISIBLE_DEVICES=$RETRIEVER_GPU_DEVICES \
+  python search/retriever_server.py > "$RETRIEVER_LOG" 2>&1 &
+RETRIEVER_PID=$!
+PIDS+=($RETRIEVER_PID)
+echo "🛰️  Retriever started (PID: $RETRIEVER_PID, GPUs: $RETRIEVER_GPU_DEVICES)"
+
 # ---- vLLM server (tensor-parallel across dedicated GPUs for 32B model) ------
 LOG_FILE="vllm.log"
 # Pass NCCL env vars inline to ensure they reach the subprocess even when
@@ -94,14 +112,6 @@ echo "📺 Started Qwen3-32B on GPUs $VLLM_GPU_DEVICES with TP=$VLLM_TENSOR_PARA
     break
   fi
 done
-
-# ---- Retriever server -------------------------------------------------------
-echo "🔍 Launching retriever server..."
-CUDA_VISIBLE_DEVICES=$RETRIEVER_GPU_DEVICES \
-  python search/retriever_server.py > "$RETRIEVER_LOG" 2>&1 &
-RETRIEVER_PID=$!
-PIDS+=($RETRIEVER_PID)
-echo "🛰️  Retriever started (PID: $RETRIEVER_PID, GPUs: $RETRIEVER_GPU_DEVICES)"
 
 # ---- Generate trajectories --------------------------------------------------
 RUN_EXIT_CODE=0
