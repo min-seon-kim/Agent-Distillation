@@ -21,6 +21,9 @@ parser.add_argument("--index_path", type=str, default="search/database/wikipedia
 parser.add_argument("--corpus_path", type=str, default="search/database/wikipedia/wiki-18.jsonl", help="Local corpus file.")
 parser.add_argument("--topk", type=int, default=3, help="Number of retrieved passages for one query.")
 parser.add_argument("--retriever_model", type=str, default="intfloat/e5-base-v2", help="Name of the retriever model.")
+parser.add_argument("--faiss_gpu", type=int, default=1,
+                    help="1=index on GPU(s) (needs VRAM >= index size, sharded across visible GPUs); "
+                         "0=index on CPU RAM (encoder still uses GPU). Use 0 when the index doesn't fit a single GPU.")
 
 args = parser.parse_args()
 
@@ -342,7 +345,7 @@ config = Config(
     index_path=args.index_path,
     corpus_path=args.corpus_path,
     retrieval_topk=args.topk,
-    faiss_gpu=True,
+    faiss_gpu=bool(args.faiss_gpu),
     retrieval_model_path=args.retriever_model,
     retrieval_pooling_method="mean",
     retrieval_query_max_length=256,
